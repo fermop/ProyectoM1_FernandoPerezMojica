@@ -3,13 +3,13 @@
    ========================================================================== */
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
 }
 
 html {
-  font-size: 100%;
+   font-size: 100%;
 }
 
 body {
@@ -26,12 +26,13 @@ body {
    ========================================================================== */
 
 :root {
-  --color-texto: #000;
-  --color-texto--header: #008BF8;
-  --color-fondo: #FAFAFA;
+   --color-texto: #000;
+   --color-texto--header: #008BF8;
+   --color-fondo-primario: #008BF8;
+   --color-fondo-secundario: #FAFAFA;
 
-  --font-header: "Montserrat", sans-serif;
-  --font-cuerpo: "Inter", sans-serif;
+   --font-header: "Montserrat", sans-serif;
+   --font-cuerpo: "Inter", sans-serif;
 }
 
 /* ==========================================================================
@@ -39,8 +40,8 @@ body {
    ========================================================================== */
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-header);
-  line-height: 1.2;
+   font-family: var(--font-header);
+   line-height: 1.2;
 }
 
 h1 { font-size: 1.75rem; }
@@ -50,9 +51,9 @@ h1 { font-size: 1.75rem; }
    ========================================================================== */
 
 .contenedor {
-  max-width: 75rem;
-  margin: 0 auto;
-  padding: 0 1rem;
+   max-width: 75rem;
+   margin: 0 auto;
+   padding: 0 1rem;
 }
 
 /* ==========================================================================
@@ -67,6 +68,69 @@ header {
    align-items: center;
 }
 
+#wrapper-paleta-colores {
+   flex-grow: 1;
+}
+
+#wrapper-configuracion {
+   background-color: var(--color-fondo-secundario);
+   order: 1;
+}
+
+#wrapper-configuracion form {
+   width: 80%;
+   max-width: 75rem;
+   margin: 0 auto;
+}
+
+#wrapper-configuracion ul {
+   height: 5rem;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   list-style: none;
+}
+
+#wrapper-configuracion ul div {
+   display: flex;
+   gap: 3rem;
+}
+
+#wrapper-configuracion ul div li {
+   position: relative;
+}
+
+#wrapper-configuracion ul div li label {
+   position: absolute;
+   font-family: var(--font-header);
+   font-size: .7rem;
+   text-transform: uppercase;
+   color: rgba(0, 0, 0, .3);
+   top: -1rem;
+}
+
+#wrapper-configuracion select {
+   padding: .5rem 1rem;
+   border-radius: 1rem;
+   background-color: transparent;
+   border: 1px solid #ccc;
+}
+
+#boton-generar {
+   padding: .5rem 1rem;
+   border-radius: 1rem;
+   background-color: var(--color-fondo-primario);
+   color: white;
+   font-weight: 600;
+   border: none;
+   cursor: pointer;
+   transition: 200ms;
+}
+
+#boton-generar:hover {
+   background-color: hsl(206, 100%, 40%);
+}
+
 /* ==========================================================================
    Utilidades y helpers
    ========================================================================== */
@@ -79,4 +143,9 @@ header {
 
 @media (min-width: 768px) {
    h1 { font-size: 2.5rem; }
+
+   #wrapper-configuracion {
+      order: unset;
+      border-top: 1px solid #ccc;
+   }
 }

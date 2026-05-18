@@ -14,24 +14,26 @@
     <h1>Coloratorfly</h1>
   </header>
 
-  <section aria-label="Controles de configuración">
+  <section id="wrapper-configuracion" aria-label="Controles de configuración">
     <form>
       <ul>
-        <li>
-          <label for="select-cantidad-paleta">Cantidad de colores:</label>
-          <select name="cantidad-paleta" id="select-cantidad-paleta">
-            <option value="6">6</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-          </select>
-        </li>
-        <li>
-          <label for="select-formato-color">Formato:</label>
-          <select name="formato-color" id="select-formato-color">
-            <option value="hsl">hsl</option>
-            <option value="hex">hex</option>
-          </select>
-        </li>
+        <div>
+          <li>
+            <label for="select-cantidad-paleta">Cantidad:</label>
+            <select name="cantidad-paleta" id="select-cantidad-paleta">
+              <option value="6">6</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+          </li>
+          <li>
+            <label for="select-formato-color">Formato:</label>
+            <select name="formato-color" id="select-formato-color">
+              <option value="hsl">hsl</option>
+              <option value="hex">hex</option>
+            </select>
+          </li>
+        </div>
         <li>
           <button type="submit" id="boton-generar">Generar</button>
         </li>
