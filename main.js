@@ -46,6 +46,15 @@ const generarColorHex = function() {
   return [colorHexGenerado, esOscuro];
 }
 
+async function copiarAlPortapapeles(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log('Color copiado al portapapeles');
+  } catch (err) {
+    console.error('Error al copiar: ', err);
+  }
+}
+
 // Eventos
   // Al visitar la página, renderizar colores por defecto
 document.addEventListener('DOMContentLoaded', function() {
@@ -75,6 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 4. Inyectar en el DOM
     wrapperPaletaColores.appendChild(divColor);
+
+    // 5. Agregar función para copiar al portapapeles
+    divColor.addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
   }
 });
 
@@ -116,5 +128,8 @@ botonGenerar.addEventListener('click', function(e) {
 
     // 4. Inyectar en el DOM
     wrapperPaletaColores.appendChild(divColor);
+
+    // 5. Agregar función para copiar al portapapeles
+    divColor.addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
   }
 });
