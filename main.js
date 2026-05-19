@@ -7,6 +7,8 @@ const wrapperPaletaColores = document.getElementById('wrapper-paleta-colores')
 const wrapperColors = document.querySelectorAll('.wrapper-color')
 const colorFormatoTextos = document.querySelectorAll('.color__formato-texto')
 
+const toastContenedor = document.getElementById('toast-contenedor')
+
 // Variables y estados
 
 // Funciones
@@ -49,7 +51,27 @@ const generarColorHex = function() {
 async function copiarAlPortapapeles(text) {
   try {
     await navigator.clipboard.writeText(text);
-    console.log('Color copiado al portapapeles');
+    const toast = document.createElement('div')
+    toast.classList.add('toast')
+    toast.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-icon lucide-circle-check"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+      <span>Color copiado al portapapeles</span>
+    `
+
+    toastContenedor.appendChild(toast)
+
+    setTimeout(() => {
+      toast.classList.add('show')
+    }, 10);
+
+    setTimeout(() => {
+      toast.classList.remove('show')
+      toast.addEventListener('transitionend', () => {
+        if (toast.parentElement) {
+          toast.remove()
+        }
+      })
+    }, 1000);
   } catch (err) {
     console.error('Error al copiar: ', err);
   }
@@ -86,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
     wrapperPaletaColores.appendChild(divColor);
 
     // 5. Agregar función para copiar al portapapeles
-    divColor.addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
+    divColor.children[1].addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
   }
 });
 
@@ -130,6 +152,6 @@ botonGenerar.addEventListener('click', function(e) {
     wrapperPaletaColores.appendChild(divColor);
 
     // 5. Agregar función para copiar al portapapeles
-    divColor.addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
+    divColor.children[1].addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
   }
 });
