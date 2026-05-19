@@ -12,7 +12,7 @@ const toastContenedor = document.getElementById('toast-contenedor')
 // Variables y estados
 const iconoCopiar = `<svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`
 const iconoExito = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-icon lucide-circle-check"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`
-const iconoError = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x-icon lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>`
+const iconoError = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x-icon lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>`
 
 // Funciones
 const generarColorHsl = function() {
@@ -49,6 +49,41 @@ const generarColorHex = function() {
   const colorHexGenerado = `#${hexR}${hexG}${hexB}`.toUpperCase();
 
   return [colorHexGenerado, esOscuro];
+}
+
+const renderizarPaleta = function() {
+  const cantidadDeColoresAGenerar = Number(selectCantidad.value);
+  const formatoDeColoresAGenerar = selectFormatoColor.value;
+
+  wrapperPaletaColores.innerHTML = '';
+
+  // Generar paleta de colores acorde a la cantidad ingresada
+  for (let i = 0; i < cantidadDeColoresAGenerar; i++) {
+    let colorGenerado;
+    let esOscuro;
+    
+    if (formatoDeColoresAGenerar === 'hsl') {
+      [colorGenerado, esOscuro] = generarColorHsl();
+    } else if (formatoDeColoresAGenerar === 'hex') {
+      [colorGenerado, esOscuro] = generarColorHex();
+    }
+
+    const divColor = document.createElement('div');
+    divColor.classList.add('wrapper-color');
+    divColor.style.backgroundColor = colorGenerado;
+
+    divColor.innerHTML = `
+      <p class="color__formato-texto ${esOscuro ? 'es-oscuro' : ''}">${colorGenerado}</p>
+      <button type="button" class="boton-copiar tooltip-copiar animacion-click cursor-pointer ${esOscuro ? 'es-oscuro' : ''}" aria-label="Copiar color al portapapeles" data-tip="Copiar">
+        ${iconoCopiar}
+      </button>
+    `;
+
+    wrapperPaletaColores.appendChild(divColor);
+
+    const botonCopiar = divColor.querySelector('.boton-copiar');
+    botonCopiar.addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
+  }
 }
 
 // Función auxiliar para crear y mostrar notificaciones toast
@@ -92,80 +127,10 @@ async function copiarAlPortapapeles(text) {
 }
 
 // Eventos
-  // Al visitar la página, renderizar colores por defecto
-document.addEventListener('DOMContentLoaded', function() {
-  // 1. Obtener los valores de los selects
-  const cantidadDeColoresAGenerar = Number(selectCantidad.value);
-  const formatoDeColoresAGenerar = selectFormatoColor.value;
-
-  // 2. Limpiar el contenedor principal antes de agregar los nuevos
-  wrapperPaletaColores.innerHTML = '';
-
-  // 3. Iterar y crear los nuevos elementos
-  for (let i = 0; i < cantidadDeColoresAGenerar; i++) {  
-    const [colorGenerado, esOscuro] = generarColorHsl();
-
-    // Crear el contenedor principal del color
-    const divColor = document.createElement('div');
-    divColor.classList.add('wrapper-color');
-    divColor.style.backgroundColor = colorGenerado;
-
-    // Insertar el HTML interno (texto y botón)
-    divColor.innerHTML = `
-      <p class="color__formato-texto ${esOscuro && 'es-oscuro'}">${colorGenerado}</p>
-      <button type="button" class="boton-copiar tooltip-copiar animacion-click cursor-pointer ${esOscuro && 'es-oscuro'}" aria-label="Copiar color al portapapeles" data-tip="Copiar">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-      </button>
-    `;
-
-    // 4. Inyectar en el DOM
-    wrapperPaletaColores.appendChild(divColor);
-
-    // 5. Agregar función para copiar al portapapeles
-    divColor.children[1].addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
-  }
-});
-
+  // Al visitar la página, renderizar colores por defecto (6, hsl)
+document.addEventListener('DOMContentLoaded', renderizarPaleta);
 
 botonGenerar.addEventListener('click', function(e) {
   e.preventDefault();
-
-  // 1. Obtener los valores de los selects
-  const cantidadDeColoresAGenerar = Number(selectCantidad.value);
-  const formatoDeColoresAGenerar = selectFormatoColor.value;
-
-  // 2. Limpiar el contenedor principal antes de agregar los nuevos
-  wrapperPaletaColores.innerHTML = '';
-
-  // 3. Iterar y crear los nuevos elementos
-  for (let i = 0; i < cantidadDeColoresAGenerar; i++) {
-    let colorGenerado;
-    let esOscuro;
-    
-    // Generar los datos del color
-    if (formatoDeColoresAGenerar === 'hsl') {
-      [colorGenerado, esOscuro] = generarColorHsl();
-    } else if (formatoDeColoresAGenerar === 'hex') {
-      [colorGenerado, esOscuro] = generarColorHex();
-    }
-
-    // Crear el contenedor principal del color
-    const divColor = document.createElement('div');
-    divColor.classList.add('wrapper-color');
-    divColor.style.backgroundColor = colorGenerado;
-
-    // Insertar el HTML interno (texto y botón)
-    divColor.innerHTML = `
-      <p class="color__formato-texto ${esOscuro && 'es-oscuro'}">${colorGenerado}</p>
-      <button type="button" class="boton-copiar tooltip-copiar animacion-click cursor-pointer ${esOscuro && 'es-oscuro'}" aria-label="Copiar color al portapapeles" data-tip="Copiar">
-        <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-      </button>
-    `;
-
-    // 4. Inyectar en el DOM
-    wrapperPaletaColores.appendChild(divColor);
-
-    // 5. Agregar función para copiar al portapapeles
-    divColor.children[1].addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
-  }
+  renderizarPaleta();
 });
