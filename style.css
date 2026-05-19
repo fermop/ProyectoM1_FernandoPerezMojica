@@ -156,7 +156,7 @@ header {
    font-weight: 600;
 }
 
-.btn-copiar {
+.boton-copiar {
    background-color: transparent;
    border: none;
    padding: .5rem;
@@ -165,13 +165,13 @@ header {
    transition: 200ms;
 }
 
-.btn-copiar:hover {
+.boton-copiar:hover {
    background-color: rgba(255, 255, 255, 0.3);
    backdrop-filter: blur(10px);
    -webkit-backdrop-filter: blur(10px);
 }
 
-.btn-copiar svg {
+.boton-copiar svg {
    display: block;
    width: 1rem;
    height: 1rem;
