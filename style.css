@@ -60,6 +60,8 @@ h1 { font-size: 1.75rem; }
    Componentes
    ========================================================================== */
 
+/* ### Header ### */
+
 header {
    height: 4rem;
    color: var(--color-texto--header);
@@ -68,9 +70,7 @@ header {
    align-items: center;
 }
 
-#wrapper-paleta-colores {
-   flex-grow: 1;
-}
+/* ### Section para configuración de el generador ### */
 
 #wrapper-configuracion {
    background-color: var(--color-fondo-secundario);
@@ -131,6 +131,51 @@ header {
    background-color: hsl(206, 100%, 40%);
 }
 
+/* ### Contenedor de la paleta de colores ### */
+
+#wrapper-paleta-colores {
+   flex-grow: 1;
+   display: flex;
+   flex-direction: column;
+}
+
+.wrapper-color {
+   min-height: 3.5rem;
+   flex-grow: 1;
+   width: 100%;
+   padding: 0 2rem;
+   margin: 0 auto;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.color__formato-texto {
+   font-size: 1rem;
+   font-weight: 600;
+}
+
+.btn-copiar {
+   background-color: transparent;
+   border: none;
+   padding: .5rem;
+   border-radius: .75rem;
+   cursor: pointer;
+   transition: 200ms;
+}
+
+.btn-copiar:hover {
+   background-color: rgba(255, 255, 255, 0.3);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-copiar svg {
+   display: block;
+   width: 1rem;
+   height: 1rem;
+}
+
 /* ==========================================================================
    Utilidades y helpers
    ========================================================================== */
@@ -147,5 +192,16 @@ header {
    #wrapper-configuracion {
       order: unset;
       border-top: 1px solid #ccc;
+   }
+
+   #wrapper-paleta-colores {
+      flex-direction: row;
+   }
+
+   .wrapper-color {
+     flex-direction: column-reverse;
+     justify-content: end;
+     padding-bottom: 5rem;
+     gap: 1rem;
    }
 }
