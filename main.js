@@ -9,7 +9,6 @@ const colorFormatoTextos = document.querySelectorAll('.color__formato-texto')
 
 // Variables y estados
 
-
 // Funciones
 const generarColorHsl = function() {
   const h = Math.floor(Math.random() * 360)
@@ -23,6 +22,28 @@ const generarColorHsl = function() {
   const esOscuro = l < 50
 
   return [colorHslGenerado, esOscuro]
+}
+
+const generarColorHex = function() {
+  // 1. Generamos los valores Rojo (R), Verde (G) y Azul (B) del 0 al 255
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+
+  // 2. Aplicamos la fórmula estándar (YIQ) para calcular el brillo percibido
+  // Si el resultado es menor a 128, el ojo humano lo percibe como un color oscuro
+  const luminancia = (r * 299 + g * 587 + b * 114) / 1000;
+  const esOscuro = luminancia < 128;
+
+  // 3. Convertimos cada número a texto en formato hexadecimal (base 16)
+  // padStart(2, '0') asegura que si el valor es por ejemplo "5", se escriba como "05"
+  const hexR = r.toString(16).padStart(2, '0');
+  const hexG = g.toString(16).padStart(2, '0');
+  const hexB = b.toString(16).padStart(2, '0');
+
+  const colorHexGenerado = `#${hexR}${hexG}${hexB}`.toUpperCase();
+
+  return [colorHexGenerado, esOscuro];
 }
 
 // Eventos
@@ -78,7 +99,7 @@ botonGenerar.addEventListener('click', function(e) {
     if (formatoDeColoresAGenerar === 'hsl') {
       [colorGenerado, esOscuro] = generarColorHsl();
     } else if (formatoDeColoresAGenerar === 'hex') {
-      // [colorGenerado, esOscuro] = generarColorHex();
+      [colorGenerado, esOscuro] = generarColorHex();
     }
 
     // Crear el contenedor principal del color
