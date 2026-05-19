@@ -68,6 +68,12 @@ header {
    display: flex;
    justify-content: center;
    align-items: center;
+   padding: .5rem;
+}
+
+#logo {
+   display: block;
+   height: 100%;
 }
 
 /* ### Section para configuración de el generador ### */
