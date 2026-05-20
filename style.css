@@ -111,6 +111,8 @@ header {
    text-transform: uppercase;
    color: var(--color-texto--label);
    top: -1rem;
+   left: 50%;
+   transform: translateX(-50%);
 }
 
 #wrapper-configuracion select {
