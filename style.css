@@ -85,30 +85,26 @@ header {
    order: 1;
 }
 
-#wrapper-configuracion form {
+#formulario-paleta {
    width: 80%;
    max-width: 75rem;
    margin: 0 auto;
-}
-
-#wrapper-configuracion ul {
    height: 5rem;
    display: flex;
    justify-content: space-between;
    align-items: center;
-   list-style: none;
 }
 
-#wrapper-configuracion ul div {
+.grupo-selects {
    display: flex;
    gap: 3rem;
 }
 
-#wrapper-configuracion ul div li {
+.control-input {
    position: relative;
 }
 
-#wrapper-configuracion ul div li label {
+.control-input label {
    position: absolute;
    font-family: var(--font-header);
    font-size: .7rem;

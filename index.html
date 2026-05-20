@@ -18,29 +18,29 @@
   </header>
 
   <section id="wrapper-configuracion" aria-label="Controles de configuración">
-    <form>
-      <ul>
-        <div>
-          <li>
-            <label for="select-cantidad-paleta">Cantidad:</label>
-            <select name="cantidad-paleta" id="select-cantidad-paleta" class="cursor-pointer">
-              <option value="6">6</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-            </select>
-          </li>
-          <li>
-            <label for="select-formato-color">Formato:</label>
-            <select name="formato-color" id="select-formato-color" class="cursor-pointer">
-              <option value="hsl">hsl</option>
-              <option value="hex">hex</option>
-            </select>
-          </li>
+    <form id="formulario-paleta">
+      <div class="grupo-selects">
+        <div class="control-input">
+          <label for="select-cantidad-paleta">Cantidad:</label>
+          <select name="cantidad-paleta" id="select-cantidad-paleta" class="cursor-pointer">
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
         </div>
-        <li>
-          <button type="submit" id="boton-generar" class="animacion-click cursor-pointer">Generar</button>
-        </li>
-      </ul>
+        
+        <div class="control-input">
+          <label for="select-formato-color">Formato:</label>
+          <select name="formato-color" id="select-formato-color" class="cursor-pointer">
+            <option value="hsl">hsl</option>
+            <option value="hex">hex</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-boton">
+        <button type="submit" id="boton-generar" class="animacion-click cursor-pointer">Generar</button>
+      </div>
     </form>
   </section>
 
@@ -59,7 +59,11 @@
   </main>
 
   <!-- Contenedor para las notificaciones Toast -->
-  <div id="toast-contenedor"></div>
+  <!--
+    aria-live="polite" le dice al lector de pantalla que lea el contenido nuevo cuando termine de hablar, sin interrumpir al usuario.
+    aria-atomic="true" asegura que lea todo el mensaje completo.
+  -->
+  <div id="toast-contenedor" aria-live="polite" aria-atomic="true"></div>
   <script src="./main.js" defer></script>
 </body>
 </html>
