@@ -1,4 +1,6 @@
-// Selectores
+/* ==========================================================================
+   Selectores del DOM
+   ========================================================================== */
 const botonGenerar = document.getElementById('boton-generar')
 const selectCantidad = document.getElementById('select-cantidad-paleta')
 const selectFormatoColor = document.getElementById('select-formato-color')
@@ -9,12 +11,16 @@ const colorFormatoTextos = document.querySelectorAll('.color__formato-texto')
 
 const toastContenedor = document.getElementById('toast-contenedor')
 
-// Variables y estados
+/* ==========================================================================
+   Constantes
+   ========================================================================== */
 const iconoCopiar = `<svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`
 const iconoExito = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-icon lucide-circle-check"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`
 const iconoError = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x-icon lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>`
 
-// Funciones
+/* ==========================================================================
+   Lógica de Generación de Colores
+   ========================================================================== */
 const generarColorHsl = function() {
   const h = Math.floor(Math.random() * 360)
   const s = Math.floor(Math.random() * 100)
@@ -22,25 +28,25 @@ const generarColorHsl = function() {
 
   const colorHslGenerado = `hsl(${h} ${s}% ${l}%)`
 
-  // Determinar si el color generado es oscuro para cambiar el color de letra
-    // Se determina si el lightness es menor a 50%
+  // Determinar si el color generado es oscuro para cambiar el color de letra y evitar contrastes
+  // Se determina 'oscuro' si el lightness (l) es menor a 50%
   const esOscuro = l < 50
 
   return [colorHslGenerado, esOscuro]
 }
 
 const generarColorHex = function() {
-  // 1. Generamos los valores Rojo (R), Verde (G) y Azul (B) del 0 al 255
+  // Para determinar si el color generado es oscuro primero generamos un color aleatorio en formato rgb
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
   const b = Math.floor(Math.random() * 256);
 
-  // 2. Aplicamos la fórmula estándar (YIQ) para calcular el brillo percibido
+  // Aplicamos la fórmula estándar (YIQ) para calcular el brillo percibido
   // Si el resultado es menor a 128, el ojo humano lo percibe como un color oscuro
   const luminancia = (r * 299 + g * 587 + b * 114) / 1000;
   const esOscuro = luminancia < 128;
 
-  // 3. Convertimos cada número a texto en formato hexadecimal (base 16)
+  // Convertimos cada número a texto en formato hexadecimal (base 16)
   // padStart(2, '0') asegura que si el valor es por ejemplo "5", se escriba como "05"
   const hexR = r.toString(16).padStart(2, '0');
   const hexG = g.toString(16).padStart(2, '0');
@@ -51,6 +57,9 @@ const generarColorHex = function() {
   return [colorHexGenerado, esOscuro];
 }
 
+/* ==========================================================================
+   Renderizado y UI
+   ========================================================================== */
 const renderizarPaleta = function() {
   const cantidadDeColoresAGenerar = Number(selectCantidad.value);
   const formatoDeColoresAGenerar = selectFormatoColor.value;
@@ -85,6 +94,10 @@ const renderizarPaleta = function() {
     botonCopiar.addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
   }
 }
+
+/* ==========================================================================
+   Utilidades (Toast y Portapapeles)
+   ========================================================================== */
 
 // Función auxiliar para crear y mostrar notificaciones toast
 const mostrarToast = function(mensaje, esError = false) {
@@ -126,8 +139,11 @@ async function copiarAlPortapapeles(text) {
   }
 }
 
-// Eventos
-  // Al visitar la página, renderizar colores por defecto (6, hsl)
+/* ==========================================================================
+   Manejadores de Eventos
+   ========================================================================== */
+   
+// Al visitar la página, renderizar colores por defecto (6, hsl)
 document.addEventListener('DOMContentLoaded', renderizarPaleta);
 
 botonGenerar.addEventListener('click', function(e) {
