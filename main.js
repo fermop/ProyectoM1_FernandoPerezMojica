@@ -183,3 +183,19 @@ botonGenerar.addEventListener('click', function(e) {
   e.preventDefault()
   renderizarPaleta()
 })
+
+selectCantidad.addEventListener('change', function(){
+  try {
+    mostrarToast('Cantidad cambiada')
+  } catch (err) {
+    mostrarToast('Hubo un error al cambiar la cantidad')
+  }
+})
+
+selectFormatoColor.addEventListener('change', function(){
+  try {
+    mostrarToast('Formato cambiado')
+  } catch (err) {
+    mostrarToast('Hubo un error al cambiar el formato')
+  }
+})
