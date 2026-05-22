@@ -6,9 +6,6 @@ const selectCantidad = document.getElementById('select-cantidad-paleta')
 const selectFormatoColor = document.getElementById('select-formato-color')
 
 const wrapperPaletaColores = document.getElementById('wrapper-paleta-colores')
-const wrapperColors = document.querySelectorAll('.wrapper-color')
-const colorFormatoTextos = document.querySelectorAll('.color__formato-texto')
-
 const toastContenedor = document.getElementById('toast-contenedor')
 
 /* ==========================================================================
@@ -32,70 +29,103 @@ const generarColorHsl = function() {
   // Se determina 'oscuro' si el lightness (l) es menor a 50%
   const esOscuro = l < 50
 
-  return [colorHslGenerado, esOscuro]
+  const lNormalizado = l / 100
+  const a = s * Math.min(lNormalizado, 1 - lNormalizado) / 100
+  const f = n => {
+    const k = (n + h / 30) % 12
+    const color = lNormalizado - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
+    return Math.round(255 * color).toString(16).padStart(2, '0')
+  }
+  const colorHexGenerado = `#${f(0)}${f(8)}${f(4)}`.toUpperCase()
+
+  return [colorHslGenerado, colorHexGenerado, esOscuro]
 }
 
 const generarColorHex = function() {
-  // Para determinar si el color generado es oscuro primero generamos un color aleatorio en formato rgb
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
+  const r = Math.floor(Math.random() * 256)
+  const g = Math.floor(Math.random() * 256)
+  const b = Math.floor(Math.random() * 256)
 
-  // Aplicamos la fórmula estándar (YIQ) para calcular el brillo percibido
-  // Si el resultado es menor a 128, el ojo humano lo percibe como un color oscuro
-  const luminancia = (r * 299 + g * 587 + b * 114) / 1000;
-  const esOscuro = luminancia < 128;
+  const luminancia = (r * 299 + g * 587 + b * 114) / 1000
+  const esOscuro = luminancia < 128
 
-  // Convertimos cada número a texto en formato hexadecimal (base 16)
-  // padStart(2, '0') asegura que si el valor es por ejemplo "5", se escriba como "05"
-  const hexR = r.toString(16).padStart(2, '0');
-  const hexG = g.toString(16).padStart(2, '0');
-  const hexB = b.toString(16).padStart(2, '0');
+  const hexR = r.toString(16).padStart(2, '0')
+  const hexG = g.toString(16).padStart(2, '0')
+  const hexB = b.toString(16).padStart(2, '0')
 
-  const colorHexGenerado = `#${hexR}${hexG}${hexB}`.toUpperCase();
+  const colorHexGenerado = `#${hexR}${hexG}${hexB}`.toUpperCase()
 
-  return [colorHexGenerado, esOscuro];
+  return [colorHexGenerado, esOscuro]
 }
 
 /* ==========================================================================
    Renderizado y UI
    ========================================================================== */
 const renderizarPaleta = function() {
-  const cantidadDeColoresAGenerar = Number(selectCantidad.value);
-  const formatoDeColoresAGenerar = selectFormatoColor.value;
+  const cantidadDeColoresAGenerar = Number(selectCantidad.value)
+  const formatoDeColoresAGenerar = selectFormatoColor.value
 
-  wrapperPaletaColores.innerHTML = '';
+  wrapperPaletaColores.innerHTML = ''
 
-  // Generar paleta de colores acorde a la cantidad ingresada
   for (let i = 0; i < cantidadDeColoresAGenerar; i++) {
-    let colorGenerado;
-    let esOscuro;
+    const divColor = document.createElement('div')
+    divColor.classList.add('wrapper-color')
     
     if (formatoDeColoresAGenerar === 'hsl') {
-      [colorGenerado, esOscuro] = generarColorHsl();
+      const [colorHslGenerado, colorHexGenerado, esOscuro] = generarColorHsl()
+      divColor.style.backgroundColor = colorHslGenerado
+
+      divColor.innerHTML = `
+        <div class="color-info-container">
+          <div class="color-info-row">
+            <p class="color__formato-texto ${esOscuro ? 'es-oscuro' : ''}" aria-label="Color en formato HSL">${colorHslGenerado}</p>
+            <button 
+              class="boton-copiar tooltip-copiar animacion-click cursor-pointer ${esOscuro ? 'es-oscuro' : ''}" 
+              aria-label="Copiar el color ${colorHslGenerado} al portapapeles"
+              data-tip="Copiar HSL"
+              data-color="${colorHslGenerado}"
+              type="button">
+              ${iconoCopiar}
+            </button>
+          </div>
+          <div class="color-info-row">
+            <p class="color__formato-texto ${esOscuro ? 'es-oscuro' : ''}" aria-label="Color en formato HEX">${colorHexGenerado}</p>
+            <button 
+              class="boton-copiar tooltip-copiar animacion-click cursor-pointer ${esOscuro ? 'es-oscuro' : ''}" 
+              aria-label="Copiar el color ${colorHexGenerado} al portapapeles"
+              data-tip="Copiar HEX"
+              data-color="${colorHexGenerado}"
+              type="button">
+              ${iconoCopiar}
+            </button>
+          </div>
+        </div>
+      `
     } else if (formatoDeColoresAGenerar === 'hex') {
-      [colorGenerado, esOscuro] = generarColorHex();
+      const [colorGenerado, esOscuro] = generarColorHex()
+      divColor.style.backgroundColor = colorGenerado
+
+      divColor.innerHTML = `
+        <div class="color-info-row">
+          <p class="color__formato-texto ${esOscuro ? 'es-oscuro' : ''}" aria-label="Color en formato HEX">${colorGenerado}</p>
+          <button 
+            class="boton-copiar tooltip-copiar animacion-click cursor-pointer ${esOscuro ? 'es-oscuro' : ''}" 
+            aria-label="Copiar el color ${colorGenerado} al portapapeles"
+            data-tip="Copiar HEX"
+            data-color="${colorGenerado}"
+            type="button">
+            ${iconoCopiar}
+          </button>
+        </div>
+      `
     }
 
-    const divColor = document.createElement('div');
-    divColor.classList.add('wrapper-color');
-    divColor.style.backgroundColor = colorGenerado;
+    wrapperPaletaColores.appendChild(divColor)
 
-    divColor.innerHTML = `
-      <p class="color__formato-texto ${esOscuro ? 'es-oscuro' : ''}">${colorGenerado}</p>
-      <button 
-        class="boton-copiar tooltip-copiar animacion-click cursor-pointer ${esOscuro ? 'es-oscuro' : ''}" 
-        aria-label="Copiar el color ${colorGenerado} al portapapeles"
-        data-tip="Copiar"
-        type="button">
-        ${iconoCopiar}
-      </button>
-    `;
-
-    wrapperPaletaColores.appendChild(divColor);
-
-    const botonCopiar = divColor.querySelector('.boton-copiar');
-    botonCopiar.addEventListener('click', () => copiarAlPortapapeles(colorGenerado));
+    const botonesCopiar = divColor.querySelectorAll('.boton-copiar')
+    botonesCopiar.forEach(boton => {
+      boton.addEventListener('click', () => copiarAlPortapapeles(boton.dataset.color))
+    })
   }
 }
 
@@ -103,7 +133,6 @@ const renderizarPaleta = function() {
    Utilidades (Toast y Portapapeles)
    ========================================================================== */
 
-// Función auxiliar para crear y mostrar notificaciones toast
 const mostrarToast = function(mensaje, esError = false) {
   const toast = document.createElement('div')
   toast.classList.add('toast')
@@ -115,7 +144,7 @@ const mostrarToast = function(mensaje, esError = false) {
   toast.innerHTML = `
     ${esError ? iconoError : iconoExito}
     <span>${mensaje}</span>
-  `;
+  `
 
   toastContenedor.appendChild(toast)
 
@@ -124,7 +153,7 @@ const mostrarToast = function(mensaje, esError = false) {
   }, 10)
 
   setTimeout(() => {
-    toast.classList.remove('show');
+    toast.classList.remove('show')
     toast.addEventListener('transitionend', () => {
       if (toast.parentElement) {
         toast.remove()
@@ -147,10 +176,10 @@ async function copiarAlPortapapeles(text) {
    Manejadores de Eventos
    ========================================================================== */
    
-// Al visitar la página, renderizar colores por defecto (6, hsl)
-document.addEventListener('DOMContentLoaded', renderizarPaleta);
+// Al visitar la página, renderizar colores por defecto (6, hsl y hex)
+document.addEventListener('DOMContentLoaded', renderizarPaleta)
 
 botonGenerar.addEventListener('click', function(e) {
-  e.preventDefault();
-  renderizarPaleta();
-});
+  e.preventDefault()
+  renderizarPaleta()
+})

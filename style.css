@@ -156,18 +156,34 @@ header {
 }
 
 .wrapper-color {
-   min-height: 3.5rem;
+   flex-basis: 6rem;
    flex-grow: 1;
    width: 100%;
    padding: 0 2rem;
    margin: 0 auto;
    display: flex;
-   justify-content: space-between;
+   justify-content: center;
    align-items: center;
 }
 
+.color-info-container {
+   display: flex;
+   flex-direction: column;
+   gap: 0.5rem;
+   width: 100%;
+   align-items: center;
+}
+
+.color-info-row {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   width: 100%;
+   max-width: 18.75rem;
+}
+
 .color__formato-texto {
-   font-size: 1rem;
+   font-size: .875rem;
    font-weight: 600;
 }
 
@@ -262,17 +278,18 @@ header {
       flex-direction: row;
    }
 
-   .wrapper-color {
-     flex-direction: column-reverse;
-     justify-content: end;
-     padding-bottom: 5rem;
-     gap: 1rem;
+   .color-info-container {
+      gap: 4rem;
+   }
+
+   .color__formato-texto {
+      font-size: 1rem;
    }
 
    .tooltip-copiar:hover::after {
       content: attr(data-tip);
       position: absolute;
-      top: -2.5rem;
+      top: -3.25rem;
       transform: translateX(-50%);
       background-color: var(--color-fondo-secundario-hover);
       backdrop-filter: blur(10px);
