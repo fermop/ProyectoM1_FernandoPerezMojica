@@ -97,7 +97,7 @@ header {
 
 .grupo-selects {
    display: flex;
-   gap: 3rem;
+   gap: .5rem;
 }
 
 .control-input {
@@ -120,11 +120,19 @@ header {
    border-radius: 1rem;
    background-color: transparent;
    border: 1px solid var(--color-border);
+   appearance: none;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   padding-right: 1.875rem;
+   background-image: url('./assets/img/chevron-down.svg');
+   background-repeat: no-repeat;
+   background-position: calc(100% - .625rem) center;
+   background-size: .75rem;
 }
 
 #boton-generar {
-   padding: .5rem 1rem;
-   border-radius: 1rem;
+   padding: .75rem 1.25rem;
+   border-radius: 1.25rem;
    background-color: var(--color-fondo-primario);
    color: var(--color-texto-boton-primario);
    font-weight: 600;
